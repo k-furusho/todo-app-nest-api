@@ -15,7 +15,7 @@ export class AuthService {
     private readonly config: ConfigService
   ) {}
 
-  async singnUp(dto: AuthDTO): Promise<Msg> {
+  async signUp(dto: AuthDTO): Promise<Msg> {
     const hashed = await bcrypt.hash(dto.password, 12)
     try {
       await this.prisma.user.create({
@@ -36,6 +36,7 @@ export class AuthService {
       }
     }
   }
+
   async login(dto: AuthDTO): Promise<Jwt> {
     const user = await this.prisma.user.findUnique({
       where: {
