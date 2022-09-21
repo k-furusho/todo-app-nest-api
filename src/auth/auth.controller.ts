@@ -24,7 +24,10 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  async login(@Body() dto: AuthDTO, @Res({ passthrough: true }) res: Response) {
+  async login(
+    @Body() dto: AuthDTO,
+    @Res({ passthrough: true }) res: Response
+  ): Promise<Msg> {
     const jwt = await this.authService.login(dto)
     res.cookie('access_token', jwt.accessToken, {
       httpOnly: true,
@@ -33,25 +36,26 @@ export class AuthController {
       path: '/',
     })
     return {
-      message: 'success',
+      message: 'ok',
     }
   }
 
   @HttpCode(HttpStatus.OK)
   @Post('logout')
   async logout(
-    @Body() dto: AuthDTO,
+    @Req() req: Request,
     @Res({ passthrough: true }) res: Response
-  ) {
-    const jwt = await this.authService.logout(dto)
-    res.cookie('access_token', jwt.accessToken, {
+  ): Promise<Msg> {
+    res.cookie('access_token', '', {
       httpOnly: true,
       secure: false, //NOTE:Postman動作確認のためにfalseにしてる
       sameSite: 'none',
       path: '/',
     })
     return {
-      message: 'success',
+      message: 'ok',
     }
   }
 }
+// user2@test.com
+// user2test
