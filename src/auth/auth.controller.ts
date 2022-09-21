@@ -9,8 +9,8 @@ import {
   Req,
 } from '@nestjs/common'
 import { Request, Response } from 'express'
-import { AuthService } from './auth/auth.service'
-import { AuthDTO } from './auth/DTO/auth.dto'
+import { AuthService } from './auth.service'
+import { AuthDTO } from './DTO/auth.dto'
 import { Csrf, Msg } from './interfaces/auth.interfaces'
 
 @Controller('auth')
