@@ -16,8 +16,23 @@ import { Csrf, Msg } from './interfaces/auth.interfaces'
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
   @Post('signup')
   signUp(@Body() dto: AuthDTO): Promise<Msg> {
     return this.authService.signUp(dto)
+  }
+  @HttpCode(HttpStatus.OK)
+  @Post('login')
+  async login(@Body() dto: AuthDTO, @Res({ passthrough: true }) res: Response) {
+    const jwt = await this.authService.login(dto)
+    res.cookie('access_token', jwt.accessToken, {
+      httpOnly: true,
+      secure: false, //NOTE:Postman動作確認のためにfalseにしてる
+      sameSite: 'none',
+      path: '/',
+    })
+    return {
+      message: 'success',
+    }
   }
 }
